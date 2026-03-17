@@ -1,0 +1,224 @@
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Online Hospital Appointment&lt;/title&gt;
+    &lt;style&gt;
+        body{
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            text-align: center;
+        }
+
+        h1{
+            background: #0077b6;
+            color: white;
+            padding: 15px;
+        }
+
+        .container{
+            background: white;
+            width: 400px;
+            margin: 30px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px gray;
+            text-align: left;
+        }
+
+        label{
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input, select{
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+        }
+
+        button{
+            margin-top: 15px;
+            padding: 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover{
+            background: #218838;
+        }
+
+        #output{
+            margin-top: 20px;
+            background: #e6f7ff;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;h1&gt;Online Hospital Appointment System&lt;/h1&gt;
+
+&lt;div class=&quot;container&quot;&gt;
+
+    &lt;h2&gt;Book Appointment&lt;/h2&gt;
+
+    &lt;label&gt;Patient Name&lt;/label&gt;
+    &lt;input type=&quot;text&quot; id=&quot;name&quot; placeholder=&quot;Enter your name&quot;&gt;
+
+    &lt;label&gt;Contact Number&lt;/label&gt;
+    &lt;input type=&quot;text&quot; id=&quot;phone&quot; placeholder=&quot;Enter your phone number&quot;&gt;
+
+    &lt;label&gt;Select City&lt;/label&gt;
+    &lt;select id=&quot;city&quot;&gt;
+        &lt;option value=&quot;&quot;&gt;Select City&lt;/option&gt;
+        &lt;option value=&quot;Hyderabad&quot;&gt;Hyderabad&lt;/option&gt;
+
+        &lt;option value=&quot;Bangalore&quot;&gt;Bangalore&lt;/option&gt;
+        &lt;option value=&quot;Chennai&quot;&gt;Chennai&lt;/option&gt;
+        &lt;option value=&quot;Mumbai&quot;&gt;Mumbai&lt;/option&gt;
+        &lt;option value=&quot;Delhi&quot;&gt;Delhi&lt;/option&gt;
+    &lt;/select&gt;
+
+    &lt;label&gt;Select Hospital&lt;/label&gt;
+    &lt;select id=&quot;hospital&quot;&gt;
+        &lt;option value=&quot;&quot;&gt;Select Hospital&lt;/option&gt;
+    &lt;/select&gt;
+
+    &lt;label&gt;Select Doctor&lt;/label&gt;
+    &lt;select id=&quot;doctor&quot;&gt;
+        &lt;option value=&quot;&quot;&gt;Select Doctor&lt;/option&gt;
+    &lt;/select&gt;
+
+    &lt;label&gt;Select Date&lt;/label&gt;
+    &lt;input type=&quot;date&quot; id=&quot;date&quot;&gt;
+
+    &lt;label&gt;Select Time&lt;/label&gt;
+    &lt;input type=&quot;time&quot; id=&quot;time&quot;&gt;
+
+    &lt;button id=&quot;bookBtn&quot;&gt;Book Appointment&lt;/button&gt;
+
+    &lt;h3&gt;Appointment Details&lt;/h3&gt;
+    &lt;div id=&quot;output&quot;&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;script&gt;
+    // ✅ Hospital &amp; Doctor Data
+    const hospitalData = {
+        Hyderabad: {
+            &quot;Apollo Hospital&quot;: [&quot;Dr. Ramesh (Cardiologist)&quot;, &quot;Dr. Anita (Dentist)&quot;, &quot;Dr. Mahesh
+(General Physician)&quot;],
+            &quot;Yashoda Hospital&quot;: [&quot;Dr. Kumar (Neurologist)&quot;, &quot;Dr. Priya (Dermatologist)&quot;, &quot;Dr. Sandeep
+(Orthopedic)&quot;],
+            &quot;KIMS Hospital&quot;: [&quot;Dr. Rajesh (ENT)&quot;, &quot;Dr. Meena (Gynecologist)&quot;, &quot;Dr. Hari
+(Pediatrician)&quot;]
+        },
+        Bangalore: {
+            &quot;Manipal Hospital&quot;: [&quot;Dr. Raj (Orthopedic)&quot;, &quot;Dr. Sneha (Gynecologist)&quot;, &quot;Dr. Arjun
+(Cardiologist)&quot;],
+            &quot;Fortis Hospital&quot;: [&quot;Dr. Kavya (ENT)&quot;, &quot;Dr. Rahul (Pediatrician)&quot;, &quot;Dr. Neha (Neurologist)&quot;],
+            &quot;Sakra World Hospital&quot;: [&quot;Dr. Vinod (General Physician)&quot;, &quot;Dr. Swathi (Dermatologist)&quot;,
+&quot;Dr. Manish (Cardiologist)&quot;]
+        },
+        Chennai: {
+            &quot;MIOT Hospital&quot;: [&quot;Dr. Suresh (Physician)&quot;, &quot;Dr. Meena (Dentist)&quot;, &quot;Dr. Prakash
+(Cardiologist)&quot;],
+            &quot;Apollo Chennai&quot;: [&quot;Dr. Ravi (Cardiologist)&quot;, &quot;Dr. Lakshmi (Dermatologist)&quot;, &quot;Dr. Vinay
+(Orthopedic)&quot;],
+            &quot;Vasan Eye Care&quot;: [&quot;Dr. Aravind (Ophthalmologist)&quot;, &quot;Dr. Priya (Optometrist)&quot;]
+        },
+
+        Mumbai: {
+            &quot;Lilavati Hospital&quot;: [&quot;Dr. Sunil (Cardiologist)&quot;, &quot;Dr. Meera (Gynecologist)&quot;, &quot;Dr. Kiran
+(Neurologist)&quot;],
+            &quot;Bombay Hospital&quot;: [&quot;Dr. Rajesh (Orthopedic)&quot;, &quot;Dr. Anita (Pediatrician)&quot;, &quot;Dr. Rohan
+(ENT)&quot;]
+        },
+        Delhi: {
+            &quot;AIIMS&quot;: [&quot;Dr. Sharma (Physician)&quot;, &quot;Dr. Sangeeta (Dermatologist)&quot;, &quot;Dr. Vivek
+(Cardiologist)&quot;],
+            &quot;Fortis Delhi&quot;: [&quot;Dr. Raj (ENT)&quot;, &quot;Dr. Priya (Gynecologist)&quot;, &quot;Dr. Karan (Orthopedic)&quot;]
+        }
+    };
+
+    // ✅ Elements
+    const citySelect = document.getElementById(&quot;city&quot;);
+    const hospitalSelect = document.getElementById(&quot;hospital&quot;);
+    const doctorSelect = document.getElementById(&quot;doctor&quot;);
+    const bookBtn = document.getElementById(&quot;bookBtn&quot;);
+    const outputDiv = document.getElementById(&quot;output&quot;);
+
+    // ✅ Populate hospitals when city changes
+    citySelect.addEventListener(&quot;change&quot;, function() {
+        const city = citySelect.value;
+        hospitalSelect.innerHTML = &quot;&lt;option value=&#39;&#39;&gt;Select Hospital&lt;/option&gt;&quot;;
+        doctorSelect.innerHTML = &quot;&lt;option value=&#39;&#39;&gt;Select Doctor&lt;/option&gt;&quot;;
+
+        if(city &amp;&amp; hospitalData[city]){
+
+            Object.keys(hospitalData[city]).forEach(hospital =&gt; {
+                const option = document.createElement(&quot;option&quot;);
+                option.text = hospital;
+                option.value = hospital;
+                hospitalSelect.add(option);
+            });
+        }
+    });
+
+    // ✅ Populate doctors when hospital changes
+    hospitalSelect.addEventListener(&quot;change&quot;, function() {
+        const city = citySelect.value;
+        const hospital = hospitalSelect.value;
+        doctorSelect.innerHTML = &quot;&lt;option value=&#39;&#39;&gt;Select Doctor&lt;/option&gt;&quot;;
+
+        if(city &amp;&amp; hospital &amp;&amp; hospitalData[city][hospital]){
+            hospitalData[city][hospital].forEach(doctor =&gt; {
+                const option = document.createElement(&quot;option&quot;);
+                option.text = doctor;
+                option.value = doctor;
+                doctorSelect.add(option);
+            });
+        }
+    });
+
+    // ✅ Book appointment
+
+    bookBtn.addEventListener(&quot;click&quot;, function() {
+        const name = document.getElementById(&quot;name&quot;).value.trim();
+        const phone = document.getElementById(&quot;phone&quot;).value.trim();
+        const city = citySelect.value;
+        const hospital = hospitalSelect.value;
+        const doctor = doctorSelect.value;
+        const date = document.getElementById(&quot;date&quot;).value;
+        const time = document.getElementById(&quot;time&quot;).value;
+
+        if(!name || !phone || !city || !hospital || !doctor || !date || !time){
+            alert(&quot;Please fill all fields&quot;);
+            return;
+        }
+
+        const token = Math.floor(Math.random()*1000)+1;
+
+        const result = `
+            &lt;h3&gt;Appointment Confirmed&lt;/h3&gt;
+            &lt;p&gt;&lt;b&gt;Patient Name:&lt;/b&gt; ${name}&lt;/p&gt;
+            &lt;p&gt;&lt;b&gt;Contact Number:&lt;/b&gt; ${phone}&lt;/p&gt;
+            &lt;p&gt;&lt;b&gt;City:&lt;/b&gt; ${city}&lt;/p&gt;
+            &lt;p&gt;&lt;b&gt;Hospital:&lt;/b&gt; ${hospital}&lt;/p&gt;
+            &lt;p&gt;&lt;b&gt;Doctor:&lt;/b&gt; ${doctor}&lt;/p&gt;
+            &lt;p&gt;&lt;b&gt;Date:&lt;/b&gt; ${date}&lt;/p&gt;
+            &lt;p&gt;&lt;b&gt;Time:&lt;/b&gt; ${time}&lt;/p&gt;
+            &lt;p&gt;&lt;b&gt;Token Number:&lt;/b&gt; ${token}&lt;/p&gt;
+
+        `;
+
+        outputDiv.innerHTML = result;
+    });
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
